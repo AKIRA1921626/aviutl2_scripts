@@ -1,3 +1,4 @@
+--label:装飾
 --track@shadow_s0:濃い影開始1,0,500,1,1
 --track@shadow_e0:濃い影終了1,0,500,2,1
 --track@shadow_s1:濃い影開始2,0,500,0,1
