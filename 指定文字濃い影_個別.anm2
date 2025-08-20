@@ -1,0 +1,46 @@
+--track@shadow_s0:濃い影開始1,0,500,1,1
+--track@shadow_e0:濃い影終了1,0,500,2,1
+--track@shadow_s1:濃い影開始2,0,500,0,1
+--track@shadow_e1:濃い影終了2,0,500,0,1
+--track@shadow_s2:濃い影開始3,0,500,0,1
+--track@shadow_e2:濃い影終了3,0,500,0,1^
+--track@shadow_x:X,-1000,1000,10,1
+--track@shadow_y:Y,-1000,1000,10,1
+--track@_size0:影サイズ,0,500,5,1
+--color@shadow_col0:影色,0x000000
+--check@shadow:効果を逆転,0
+
+-- 濃い影にしたい条件を定義
+local shouldBeshadow = (
+    (shadow_s0 <= obj.index + 1 and shadow_e0 >= obj.index + 1) or
+    (shadow_s1 <= obj.index + 1 and shadow_e1 >= obj.index + 1) or
+    (shadow_s2 <= obj.index + 1 and shadow_e2 >= obj.index + 1)
+)
+
+local effect = obj.effect
+
+-- ドロップシャドウのパラメータを保持するテーブル
+local shadow_params = {
+    X = shadow_x,
+    Y = shadow_y,
+}
+
+if (shadow ~= 0) then -- 効果を逆転がオンの場合
+    -- 範囲外の文字に濃い影を付与する
+    if (not shouldBeshadow) then
+        effect("ドロップシャドウ",
+            "X", shadow_params.X,
+            "Y", shadow_params.Y
+        )
+        effect("縁取り","サイズ",_size0,"color",shadow_col0)
+    end
+else -- 効果を逆転がオフの場合
+    -- 範囲内の文字に濃い影を付与する
+    if (shouldBeshadow) then
+        effect("ドロップシャドウ",
+            "X", shadow_params.X,
+            "Y", shadow_params.Y
+        )
+        effect("縁取り","サイズ",_size0,"color",shadow_col0)
+    end
+end

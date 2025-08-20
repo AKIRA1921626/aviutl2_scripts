@@ -1,0 +1,30 @@
+--track@rotate_s0:回転開始1,0,500,1,1
+--track@rotate_e0:回転終了1,0,500,2,1
+--track@rotate_s1:回転開始2,0,500,0,1
+--track@rotate_e1:回転終了2,0,500,0,1
+--track@rotate_x:X回転数値,0,360,0,1
+--track@rotate_y:Y回転数値,0,360,0,1
+--track@rotate_z:Z回転数値,0,360,100,1
+--check@rot:効果を逆転,0
+
+-- 回転したい条件を定義
+local shouldBeTransparent = (
+    (rotate_s0 <= obj.index + 1 and rotate_e0 >= obj.index + 1) or
+    (rotate_s1 <= obj.index + 1 and rotate_e1 >= obj.index + 1) 
+)
+
+if (rot ~= 0) then -- 効果を逆転がオンの場合
+    -- 範囲外の文字を回転する
+    if (not shouldBeTransparent) then
+	obj.rx = rotate_x
+	obj.ry = rotate_y
+        obj.rz = rotate_z
+    end
+else -- 効果を逆転がオフの場合
+    -- 範囲内の文字を回転する
+    if (shouldBeTransparent) then
+	obj.rx = rotate_x
+	obj.ry = rotate_y
+        obj.rz = rotate_z
+    end
+end

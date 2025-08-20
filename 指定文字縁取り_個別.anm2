@@ -1,0 +1,44 @@
+--track@framel_s0:縁取り開始1,0,500,1,1
+--track@framel_e0:縁取り終了1,0,500,2,1
+--track@framel_s1:縁取り開始2,0,500,0,1
+--track@framel_e1:縁取り終了2,0,500,0,1
+--track@framel_s2:縁取り開始3,0,500,0,1
+--track@framel_e2:縁取り終了3,0,500,0,1
+--track@_size0:縁取り1サイズ,0,500,5,1
+--track@_blur0:縁取り1ぼかし,0,100,5,1
+--color@frame_col0:縁色,0x000000
+--track@_size1:縁取り2サイズ,0,500,5,1
+--track@_blur1:縁取り2ぼかし,0,100,5,1
+--color@frame_col1:範囲外縁色,0x000000
+--check@frame_line_out:範囲外にも縁取り,1
+--check@frame_line_reverse:効果を逆転,0
+
+
+-- 縁取りしたい条件を定義 (指定範囲内ならtrue)
+local isInFramingRange = (
+    (framel_s0 <= obj.index + 1 and framel_e0 >= obj.index + 1) or
+    (framel_s1 <= obj.index + 1 and framel_e1 >= obj.index + 1) or
+    (framel_s2 <= obj.index + 1 and framel_e2 >= obj.index + 1) 
+)
+
+local effect = obj.effect
+
+-- 最終的に適用する縁取りのタイプを決定
+local applyFrame1 = isInFramingRange
+local applyFrame2 = not isInFramingRange
+
+-- 「効果を逆転」がONの場合、適用する縁取りのタイプを入れ替える
+if (frame_line_reverse ~= 0) then
+    applyFrame1 = not isInFramingRange
+    applyFrame2 = isInFramingRange
+end
+
+-- 縁取りを適用
+if (applyFrame1) then
+    effect("縁取り","サイズ",_size0,"ぼかし",_blur0,"color",frame_col0)
+end
+
+-- 「範囲外にも縁取り」がONの場合、または範囲外に適用する設定の場合に縁取り2を適用
+if (applyFrame2 and frame_line_out ~= 0) then
+    effect("縁取り","サイズ",_size1,"ぼかし",_blur1,"color",frame_col1)
+end

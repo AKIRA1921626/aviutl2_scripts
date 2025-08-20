@@ -1,0 +1,33 @@
+--label:装飾
+--information:個別オブジェクトにチェックを入れた状態で使用し、指定した文字だけ色の変更を行います。Aviutl2用のスクリプトです。
+--track@color_chaged_s0:色変更1,0,500,1,1
+--track@color_chaged_e0:色変更1,0,500,2,1
+--track@color_chaged_s1:色変更2,0,500,0,1
+--track@color_chaged_e1:色変更2,0,500,0,1
+--track@color_chaged_s2:色変更3,0,500,0,1
+--track@color_chaged_e2:色変更3,0,500,0,1
+--color@col_1:色変え1,df0000
+--color@col_2:色変え2,dfdf00
+--color@col_3:色変え3,0000df
+--track@color_pow:強さ,0,100,100,1
+
+-- 色変更にしたい条件を定義 (各範囲を個別にチェック)
+local in_range0 = (color_chaged_s0 <= obj.index + 1 and color_chaged_e0 >= obj.index + 1)
+local in_range1 = (color_chaged_s1 <= obj.index + 1 and color_chaged_e1 >= obj.index + 1)
+local in_range2 = (color_chaged_s2 <= obj.index + 1 and color_chaged_e2 >= obj.index + 1)
+
+-- 少なくとも一つの範囲に含まれるか
+local shouldBeColorChanged =  in_range0 or in_range1 or in_range2
+
+effect = obj.effect
+
+-- 範囲内の文字を色変更にする
+if (in_range0) then
+    effect("単色化","強さ",color_pow,"color",col_1,"輝度を保持する",0)
+end
+if (in_range1) then
+    effect("単色化","強さ",color_pow,"color",col_2,"輝度を保持する",0)
+end
+if (in_range2) then
+    effect("単色化","強さ",color_pow,"color",col_3,"輝度を保持する",0)
+end

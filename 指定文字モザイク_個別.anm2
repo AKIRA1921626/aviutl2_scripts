@@ -1,0 +1,39 @@
+--label:装飾
+--information:個別オブジェクトにチェックを入れた状態で使用し、指定した文字だけにモザイクを行います。Aviutl2用のスクリプトです。
+--track@mosaic_s0:モザイク開始1,0,500,1,1
+--track@mosaic_e0:モザイク終了1,0,500,2,1
+--track@mosaic_s1:モザイク開始2,0,500,0,1
+--track@mosaic_e1:モザイク終了2,0,500,0,1
+--track@mosaic_s2:モザイク開始3,0,500,0,1
+--track@mosaic_e2:モザイク終了3,0,500,0,1
+--track@_sieze0:モザイクサイズ,1,2000,12,1
+--check@mosaic_size:サイズ連動,1
+--check@mosaic:効果を逆転,0
+
+-- モザイクにしたい条件を定義
+local shouldBeMosaic = (
+    (mosaic_s0 <= obj.index + 1 and mosaic_e0 >= obj.index + 1) or
+    (mosaic_s1 <= obj.index + 1 and mosaic_e1 >= obj.index + 1) or
+    (mosaic_s2 <= obj.index + 1 and mosaic_e2 >= obj.index + 1)
+)
+
+local effect = obj.effect
+local mosaicSizeValue = _sieze0
+
+-- サイズ連動がオンの場合、サイズを調整
+if (mosaic_size ~= 0) then -- mosaic_sizeが0でない（オン）の場合
+    mosaicSizeValue = _sieze0 * obj.w / 100 * obj.zoom
+end
+
+-- モザイクを適用する条件を決定
+local applyMosaic = false
+if (mosaic == 0) then -- mosaicが0（効果を逆転がオフ）の場合
+    applyMosaic = shouldBeMosaic -- 定義範囲内をモザイク
+else -- mosaicが0でない（効果を逆転がオン）の場合
+    applyMosaic = not shouldBeMosaic -- 定義範囲外をモザイク
+end
+
+-- 条件に基づいてモザイクを適用
+if (applyMosaic) then
+    effect("モザイク", "サイズ", mosaicSizeValue)
+end

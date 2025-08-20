@@ -1,0 +1,60 @@
+--track0:開始文字1,0,500,1,1
+--track1:終了文字1,0,500,2,1
+--track2:開始文字2,0,500,0,1
+--track3:終了文字2,0,500,0,1
+--track@grd_pow:強さ,0,100,100,1
+--track@cx:中心X,-5000,1760,0,1
+--track@cy:中心Y,-5000,2140,0,1
+--track@rotate:角度,-3600,2050,0,1
+--track@grd_width:幅,0,2000,100,1
+--select@grd_blend:合成モード=0,通常=0,加算=1,減算=2,乗算=3,スクリーン=4,オーバーレイ=5,比較(明)=6,比較(暗)=7,輝度=8,色差=9,陰影=10,明暗=11,差分=12
+--select@grd_type:形状=0,線形=0,矩形=1,円形=2,凸型=3
+--color@col_start1:開始色,0xffffff
+--color@col_end1:終了色,0x000000
+--check@reverse:効果を反転,0
+--check@transparent:範囲外透明,0
+
+local effect = obj.effect
+
+-- 色が指定されているかどうかのフラグ
+local isGrdNocolor1 = (col_start1 == nil) and 1 or 0
+local isGrdNocolor2 = (col_end1 == nil) and 1 or 0
+
+-- 未定義の場合のデフォルト値
+grd_pow = grd_pow or 0
+reverse = reverse or 0
+transparent = transparent or 0
+
+-- 現在の文字が指定範囲内にあるかどうかを判定
+local isInRange = (obj.track0 <= obj.index + 1 and obj.track1 >= obj.index + 1) or
+                  (obj.track2 <= obj.index + 1 and obj.track3 >= obj.index + 1)
+
+-- グラデーションを適用するかどうかを判定
+-- 「効果を反転」がオンなら範囲外に、オフなら範囲内に適用します
+local applyGradient = (reverse ~= 0) ~= isInRange
+
+-- 透明化するかどうかを判定
+-- 「範囲外透明」がオンで、かつグラデーションを適用しない文字が対象です
+local makeTransparent = (transparent ~= 0) and not applyGradient
+
+-- グラデーションを適用する
+if applyGradient then
+    effect("グラデーション",
+        "強さ",      grd_pow,
+        "中心X",     cx,
+        "中心Y",     cy,
+        "角度",      rotate,
+        "幅",        grd_width,
+        "blend",     grd_blend,
+        "type",      grd_type,
+        "color",     col_start1,
+        "no_color",  isGrdNocolor1,
+        "color2",    col_end1,
+        "no_color2", isGrdNocolor2
+    )
+end
+
+-- 透明化する
+if makeTransparent then
+    obj.alpha = 0
+end

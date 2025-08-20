@@ -1,0 +1,29 @@
+--track@trans_s0:透明開始1,0,500,1,1
+--track@trans_e0:透明終了1,0,500,2,1
+--track@trans_s1:透明開始2,0,500,0,1
+--track@trans_e1:透明終了2,0,500,0,1
+--track@trans_s2:透明開始3,0,500,0,1
+--track@trans_e2:透明終了3,0,500,0,1
+--track@trans_s3:透明開始4,0,500,0,1
+--track@trans_e3:透明終了4,0,500,0,1
+--check@transparent:効果を逆転,0
+
+-- 透明にしたい条件を定義
+local shouldBeTransparent = (
+    (trans_s0 <= obj.index + 1 and trans_e0 >= obj.index + 1) or
+    (trans_s1 <= obj.index + 1 and trans_e1 >= obj.index + 1) or
+    (trans_s2 <= obj.index + 1 and trans_e2 >= obj.index + 1) or
+    (trans_s3 <= obj.index + 1 and trans_e3 >= obj.index + 1)
+)
+
+if (transparent ~= 0) then -- 効果を逆転がオンの場合
+    -- 範囲外の文字を透明にする
+    if (not shouldBeTransparent) then
+        obj.alpha = 0
+    end
+else -- 効果を逆転がオフの場合
+    -- 範囲内の文字を透明にする
+    if (shouldBeTransparent) then
+        obj.alpha = 0
+    end
+end
