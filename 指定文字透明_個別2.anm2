@@ -1,6 +1,5 @@
---label:装飾
---track@trans_s0:透明開始1,0,500,1,1
---track@trans_e0:透明終了1,0,500,2,1
+--track@trans_s0:透明開始1,0,500,0,1
+--track@trans_e0:透明終了1,0,500,0,1
 --track@trans_s1:透明開始2,0,500,0,1
 --track@trans_e1:透明終了2,0,500,0,1
 --track@trans_s2:透明開始3,0,500,0,1
@@ -9,21 +8,21 @@
 --track@trans_e3:透明終了4,0,500,0,1
 --check@transparent:効果を逆転,0
 
--- 透明にしたい条件を定義
+local idx = obj.index + 1 -- 1文字目を1として扱う
+
 local shouldBeTransparent = (
-    (trans_s0 <= obj.index + 1 and trans_e0 >= obj.index + 1) or
-    (trans_s1 <= obj.index + 1 and trans_e1 >= obj.index + 1) or
-    (trans_s2 <= obj.index + 1 and trans_e2 >= obj.index + 1) or
-    (trans_s3 <= obj.index + 1 and trans_e3 >= obj.index + 1)
+    (trans_s0 <= idx and trans_e0 >= idx ) or
+    (trans_s1 <= idx and trans_e1 >= idx ) or
+    (trans_s2 <= idx and trans_e2 >= idx ) or
+    (trans_s3 <= idx and trans_e3 >= idx )
 )
 
-if (transparent ~= 0) then -- 効果を逆転がオンの場合
-    -- 範囲外の文字を透明にする
+-- 透明化の適用
+if (transparent ~= 0) then
     if (not shouldBeTransparent) then
         obj.alpha = 0
     end
-else -- 効果を逆転がオフの場合
-    -- 範囲内の文字を透明にする
+else
     if (shouldBeTransparent) then
         obj.alpha = 0
     end

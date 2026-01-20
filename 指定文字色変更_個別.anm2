@@ -10,6 +10,7 @@
 --color@col_2:色変え2,dfdf00
 --color@col_3:色変え3,0000df
 --track@color_pow:強さ,0,100,100,1
+--check@string_integrate:テキスト1枚化,0
 
 -- 色変更にしたい条件を定義 (各範囲を個別にチェック)
 local in_range0 = (color_chaged_s0 <= obj.index + 1 and color_chaged_e0 >= obj.index + 1)
@@ -30,4 +31,10 @@ if (in_range1) then
 end
 if (in_range2) then
     effect("単色化","強さ",color_pow,"color",col_3,"輝度を保持する",0)
+end
+
+if(string_integrate ~= 0) then
+    if(require("Individual_object_join")) then
+        Individual_object_join()
+    end
 end

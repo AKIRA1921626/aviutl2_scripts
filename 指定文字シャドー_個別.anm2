@@ -12,6 +12,7 @@
 --track@shadow_spread:拡散,0,500,10,1
 --color@shadow_col:影色,000000
 --check@shadow:効果を逆転,0
+--check@string_integrate:テキスト1枚化,0
 
 -- シャドーにしたい条件を定義
 local shouldBeshadow = (
@@ -52,5 +53,11 @@ else -- 効果を逆転がオフの場合
             "拡散", shadow_params.拡散,
             "影色", shadow_params.影色
         )
+    end
+end
+
+if(string_integrate ~= 0) then
+    if(require("Individual_object_join")) then
+        Individual_object_join()
     end
 end

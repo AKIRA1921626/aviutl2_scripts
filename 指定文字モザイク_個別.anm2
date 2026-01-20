@@ -9,6 +9,7 @@
 --track@_sieze0:モザイクサイズ,1,2000,12,1
 --check@mosaic_size:サイズ連動,1
 --check@mosaic:効果を逆転,0
+--check@string_integrate:テキスト1枚化,0
 
 -- モザイクにしたい条件を定義
 local shouldBeMosaic = (
@@ -36,4 +37,10 @@ end
 -- 条件に基づいてモザイクを適用
 if (applyMosaic) then
     effect("モザイク", "サイズ", mosaicSizeValue)
+end
+
+if(string_integrate ~= 0) then
+    if(require("Individual_object_join")) then
+        Individual_object_join()
+    end
 end

@@ -13,7 +13,7 @@
 --color@frame_col1:範囲外縁色,0x000000
 --check@frame_line_out:範囲外にも縁取り,1
 --check@frame_line_reverse:効果を逆転,0
-
+--check@string_integrate:テキスト1枚化,0
 
 -- 縁取りしたい条件を定義 (指定範囲内ならtrue)
 local isInFramingRange = (
@@ -42,4 +42,10 @@ end
 -- 「範囲外にも縁取り」がONの場合、または範囲外に適用する設定の場合に縁取り2を適用
 if (applyFrame2 and frame_line_out ~= 0) then
     effect("縁取り","サイズ",_size1,"ぼかし",_blur1,"color",frame_col1)
+end
+
+if(string_integrate ~= 0) then
+    if(require("Individual_object_join")) then
+        Individual_object_join()
+    end
 end
