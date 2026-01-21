@@ -13,7 +13,6 @@
 --color@col_start1:開始色,0xffffff
 --color@col_end1:終了色,0x000000
 --check@reverse:効果を反転,0
---check@transparent:範囲外透明,0
 --check@string_integrate:テキスト1枚化,0
 
 local effect = obj.effect
@@ -35,10 +34,6 @@ local isInRange = (obj.track0 <= obj.index + 1 and obj.track1 >= obj.index + 1) 
 -- 「効果を反転」がオンなら範囲外に、オフなら範囲内に適用します
 local applyGradient = (reverse ~= 0) ~= isInRange
 
--- 透明化するかどうかを判定
--- 「範囲外透明」がオンで、かつグラデーションを適用しない文字が対象です
-local makeTransparent = (transparent ~= 0) and not applyGradient
-
 -- グラデーションを適用する
 if applyGradient then
     effect("グラデーション",
@@ -54,11 +49,6 @@ if applyGradient then
         "color2",    col_end1,
         "no_color2", isGrdNocolor2
     )
-end
-
--- 透明化する
-if makeTransparent then
-    obj.alpha = 0
 end
 
 if(string_integrate ~= 0) then
